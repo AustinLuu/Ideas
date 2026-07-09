@@ -1,0 +1,26 @@
+name: Post build ideas to Discord
+
+on:
+  schedule:
+    # 13:00 UTC = 9:00 AM ET. Adjust to your timezone.
+    # For weekly instead of daily, add "* 1" at the end (Mondays only).
+    - cron: "0 13 * * *"
+  workflow_dispatch: {} # lets you trigger it manually from the Actions tab
+
+jobs:
+  post-ideas:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: pip install -r requirements.txt
+
+      - run: python main.py
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          RUN_MODE: once
