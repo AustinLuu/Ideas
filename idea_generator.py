@@ -72,6 +72,7 @@ def generate_ideas(
     response = client.messages.create(
         model=model,
         max_tokens=1500,
+        thinking={"type": "disabled"},
         system=SYSTEM_PROMPT,
         messages=[{"role": "user", "content": user_prompt}],
     )
